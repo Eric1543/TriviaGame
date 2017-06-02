@@ -90,16 +90,27 @@ console.log("corr" + correctAnswerPosition);
 
 
 	function countdown(){
-		if(timeMax>0){
+		if(timeMax>0  && total!=0){
 			timeMax--;
 			$('#theTimer').html(timeMax);
 		}
-		else{
+		else if(timeMax==0 && total!=0){
 			clearInterval(countdownTime);
 			$('#theQuestion').html("Time's up");
 			$('#showAnswer').html("Correct answer: " + questions[theIndex]['answer']);
-			
+			wrong++;
+			total--;
 			setTimeout(initialGame, 3000);
+			console.log(wrong + "total" + total)
+		}
+		else{
+			$('#theQuestion').html('Game Over Man!');
+			clearInterval(countdownTime);
+			$('#answer1').html('Thanks for playing!')
+			$('#answer2').html('Right Answers: ' + right);
+			$('#answer3').html('Wrong Answers: ' + wrong);
+			$('#answer4').html('Play Again? Y or N?');
+			$('theTimer').remove();
 		}
 	}
 
@@ -125,7 +136,12 @@ console.log("corr" + correctAnswerPosition);
 			console.log(total);
 		}
 		else{
-			console.log(total);
+			$('#theQuestion').html('Game Over Man!');
+			clearInterval(countdownTime);
+			$('#answer1').html('&nbsp;')
+			$('#answer2').html('Right Answers: ' + right);
+			$('#answer3').html('Wrong Answers: ' + wrong);
+			$('#answer4').html('&nbsp;');
 		}
 
 	});
@@ -133,36 +149,51 @@ console.log("corr" + correctAnswerPosition);
 		wrong++;
 		total--;
 		clearInterval(countdownTime);
-		$('#theQuestion').html("Try Again!");
+		$('#theQuestion').html("Sorry!");
 		if(total>0){
 			setTimeout(initialGame, 3000);
 		}
 		else{
-			
+			$('#theQuestion').html('Game Over Man!');
+			clearInterval(countdownTime);
+			$('#answer1').html('&nbsp;')
+			$('#answer2').html('Right Answers: ' + right);
+			$('#answer3').html('Wrong Answers: ' + wrong);
+			$('#answer4').html('&nbsp;');
 		}
 	});
 	$('#answer' + ans3).click(function(){
 		wrong++;
 		total--;
 		clearInterval(countdownTime);
-		$('#theQuestion').html("Try Again!");
+		$('#theQuestion').html("Sorry!");
 		if(total>0){
 			setTimeout(initialGame, 3000);
 		}
 		else{
-
+			$('#theQuestion').html('Game Over Man!');
+			clearInterval(countdownTime);
+			$('#answer1').html('&nbsp;')
+			$('#answer2').html('Right Answers: ' + right);
+			$('#answer3').html('Wrong Answers: ' + wrong);
+			$('#answer4').html('&nbsp;');
 		}		
 	});
 	$('#answer' + ans4).click(function(){
 		wrong++;
 		total--;
 		clearInterval(countdownTime);
-		$('#theQuestion').html("Try Again!");
+		$('#theQuestion').html("Sorry!");
 		if(total>0){
 			setTimeout(initialGame, 3000);
 		}
 		else{
-
+			$('#theQuestion').html('Game Over Man!');
+			clearInterval(countdownTime);
+			$('#answer1').html('&nbsp;')
+			$('#answer2').html('Right Answers: ' + right);
+			$('#answer3').html('Wrong Answers: ' + wrong);
+			$('#answer4').html('&nbsp;');
 		}		
 	});
 });

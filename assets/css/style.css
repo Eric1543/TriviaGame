@@ -80,6 +80,7 @@ footer{
 	margin-left:20%;
 	margin-right:20%;
 	padding-bottom:1%;
+	height:250px;
 }
 
 #timerArea{
@@ -91,7 +92,7 @@ footer{
 }
 
 #theTimer{
-	background-color:#FB0;
+	background-color:#CC0;
 	font-size:50px;
 	text-align:center;
 	margin-left:300px;
