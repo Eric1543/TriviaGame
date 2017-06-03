@@ -57,7 +57,7 @@ footer{
 
 #showAnswer{
 	text-align:center;
-	background-color:#0F0;
+	background-color:#A0F;
 	border-radius:25px;
 	font-size:20px;
 	font-weight:bold;
@@ -76,16 +76,17 @@ footer{
 }
 
 #answerArea{
-	background-color:#444C5C;
+	background-color:#000;
 	margin-left:20%;
 	margin-right:20%;
+	border-radius:25px;
 	padding-bottom:1%;
 	height:250px;
 }
 
 #timerArea{
 	background-color:#90AFC5;
-	margin-left:19.5%;
+	margin-left:20%;
 	margin-right:20%;
 	border: 4px solid #00B;
 	border-radius:25px;

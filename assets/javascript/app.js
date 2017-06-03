@@ -1,13 +1,17 @@
 $(document).ready(function(){
 
-	// Initial game state
-	var theIndex=0;
+	// Initialized global game variables
+	// Game counters
 	var right = 0;
 	var wrong = 0;
 	var total = 5;
+	// Variable to hold random number for the array
+	var theIndex=0;
 	var play = true;
 	var questions = [];
+	// Variable for the timer per question
 	var timeMax = 10;
+	// Variables to randomize the answers positions on the page
 	var	correctAnswerPosition = 0;
 	var	ans2 = 0;
 	var	ans3 = 0;
@@ -36,17 +40,6 @@ $(document).ready(function(){
 
 	q5 = new qAndA('Samus is?', 'A female intergalactic warrior', 'A planet', 'A serotonin reuptake inhibitor', 'A vegetable');
 
-
-	// To get a random question displayed
-	function showQuestion(){
-		$('#showAnswer').html("");
-		var ranNum = Math.floor(Math.random() * questions.length);
-		theIndex = ranNum;
-		timeMax=10;
-		$('#theTimer').html(timeMax);
-		$('#theQuestion').html(questions[theIndex]['question']);
-		// To display that question's answers
-
 	//Display the answers in random positions
 	function randomAnswerPositions (){
 		correctAnswerPosition = 1 + Math.floor(Math.random() * 3);
@@ -70,10 +63,9 @@ $(document).ready(function(){
 			ans3 = 2;
 			ans4 = 3;
 		}
-	}
+	} 
 
-	randomAnswerPositions();
-	
+	// Display the random answers
 	function setHtmlAnswers (){
 	$('#answer' + correctAnswerPosition).html(questions[theIndex]['answer']);
 	$('#answer' + ans2).html(questions[theIndex]['wrongAnswer1']);
@@ -81,13 +73,22 @@ $(document).ready(function(){
 	$('#answer' + ans4).html(questions[theIndex]['wrongAnswer3']);
 	}
 
+	// To get a random question displayed 
+	function showQuestion(){
+		$('#showAnswer').html("");
+		var ranNum = Math.floor(Math.random() * questions.length);
+		theIndex = ranNum;
+		timeMax=10;
+		$('#theTimer').html(timeMax);
+		$('#theQuestion').html(questions[theIndex]['question']);
+		// To display that question's answers
+
+	// to have the same random index as the question
+	randomAnswerPositions();
+
 	setHtmlAnswers();
-console.log("corr" + correctAnswerPosition);
-} // End of showQuestion();
-console.log("corr" + correctAnswerPosition);
-	
 
-
+	} // End of showQuestion();
 
 	function countdown(){
 		if(timeMax>0  && total!=0){
@@ -101,16 +102,18 @@ console.log("corr" + correctAnswerPosition);
 			wrong++;
 			total--;
 			setTimeout(initialGame, 3000);
-			console.log(wrong + "total" + total)
 		}
 		else{
 			$('#theQuestion').html('Game Over Man!');
 			clearInterval(countdownTime);
-			$('#answer1').html('Thanks for playing!')
-			$('#answer2').html('Right Answers: ' + right);
-			$('#answer3').html('Wrong Answers: ' + wrong);
-			$('#answer4').html('Play Again? Y or N?');
-			$('theTimer').remove();
+			$('#answer1').html('Right Answers: ' + right);
+			$('#answer2').html('Wrong Answers: ' + wrong);
+			$('#answer3').html('&nbsp;');
+			$('#answer4').html('Click here to play again!');
+			$('#answer4').click(function(){
+					gameReset();
+				});
+			
 		}
 	}
 
@@ -124,76 +127,111 @@ console.log("corr" + correctAnswerPosition);
 		showQuestion();
 	}
 
+	function gameReset(){
+		right=0;
+		wrong=0;
+		total=5;
+		timeMax=10;
+		play=true;
+		clearInterval(countdownTime);
+		initialGame();
+	}
+
 	// Start game and wait for user input. Update game and Win/Lose based on user's changes.
 	initialGame();
 	$('#answer' + correctAnswerPosition).click(function(){
-		right++;
-		total--;
-		clearInterval(countdownTime);
-		$('#theQuestion').html("Right!");
-		if(total>0){
-			setTimeout(initialGame, 3000);
-			console.log(total);
-		}
-		else{
-			$('#theQuestion').html('Game Over Man!');
+		if(play===true){
+			right++;
+			total--;
 			clearInterval(countdownTime);
-			$('#answer1').html('&nbsp;')
-			$('#answer2').html('Right Answers: ' + right);
-			$('#answer3').html('Wrong Answers: ' + wrong);
-			$('#answer4').html('&nbsp;');
+			$('#theQuestion').html("Right!");
+			if(total>0){
+				setTimeout(initialGame, 3000);
+			}
+			else{
+				play=false;
+				$('#theQuestion').html('Game Over Man!');
+				clearInterval(countdownTime);
+				$('#answer1').html('Right Answers: ' + right);
+				$('#answer2').html('Wrong Answers: ' + wrong);
+				$('#answer3').html('&nbsp;');
+				$('#answer4').html('Click here to play again!');
+				$('#answer4').click(function(){
+					gameReset();
+				});
+			}
 		}
-
 	});
 	$('#answer' + ans2).click(function(){
-		wrong++;
-		total--;
-		clearInterval(countdownTime);
-		$('#theQuestion').html("Sorry!");
-		if(total>0){
-			setTimeout(initialGame, 3000);
-		}
-		else{
-			$('#theQuestion').html('Game Over Man!');
+		if(play===true){
+			wrong++;
+			total--;
 			clearInterval(countdownTime);
-			$('#answer1').html('&nbsp;')
-			$('#answer2').html('Right Answers: ' + right);
-			$('#answer3').html('Wrong Answers: ' + wrong);
-			$('#answer4').html('&nbsp;');
+			$('#theQuestion').html("Sorry!");
+			$('#showAnswer').html("Correct answer: " + questions[theIndex]['answer']);
+			if(total>0){
+				setTimeout(initialGame, 3000);
+			}
+			else{
+				play=false;
+				$('#theQuestion').html('Game Over Man!');
+				clearInterval(countdownTime);
+				$('#answer1').html('Right Answers: ' + right);
+				$('#answer2').html('Wrong Answers: ' + wrong);
+				$('#answer3').html('&nbsp;');
+				$('#answer4').html('Click here to play again!');
+				$('#answer4').click(function(){
+					gameReset();
+				});
+			}
 		}
 	});
 	$('#answer' + ans3).click(function(){
-		wrong++;
-		total--;
-		clearInterval(countdownTime);
-		$('#theQuestion').html("Sorry!");
-		if(total>0){
-			setTimeout(initialGame, 3000);
-		}
-		else{
-			$('#theQuestion').html('Game Over Man!');
+		if(play===true){
+			wrong++;
+			total--;
 			clearInterval(countdownTime);
-			$('#answer1').html('&nbsp;')
-			$('#answer2').html('Right Answers: ' + right);
-			$('#answer3').html('Wrong Answers: ' + wrong);
-			$('#answer4').html('&nbsp;');
+			$('#theQuestion').html("Sorry!");
+			$('#showAnswer').html("Correct answer: " + questions[theIndex]['answer']);
+			if(total>0){
+				setTimeout(initialGame, 3000);
+			}
+			else{
+				play=false;
+				$('#theQuestion').html('Game Over Man!');
+				clearInterval(countdownTime);
+				$('#answer1').html('Right Answers: ' + right);
+				$('#answer2').html('Wrong Answers: ' + wrong);
+				$('#answer3').html('&nbsp;');
+				$('#answer4').html('Click here to play again!');
+				$('#answer4').click(function(){
+					gameReset();
+				});
+			}
 		}		
 	});
 	$('#answer' + ans4).click(function(){
-		wrong++;
-		total--;
-		clearInterval(countdownTime);
-		$('#theQuestion').html("Sorry!");
-		if(total>0){
-			setTimeout(initialGame, 3000);
-		}
-		else{
-			$('#theQuestion').html('Game Over Man!');
+		if(play===true){
+			wrong++;
+			total--;
 			clearInterval(countdownTime);
-			$('#answer1').html('&nbsp;')
-			$('#answer2').html('Right Answers: ' + right);
-			$('#answer3').html('Wrong Answers: ' + wrong);
-			$('#answer4').html('&nbsp;');
-		}		
+			$('#theQuestion').html("Sorry!");
+			$('#showAnswer').html("Correct answer: " + questions[theIndex]['answer']);
+			if(total>0){
+				setTimeout(initialGame, 3000);
+			}
+			else{
+				play=false
+				$('#theQuestion').html('Game Over Man!');
+				clearInterval(countdownTime);
+				$('#answer1').html('Right Answers: ' + right);
+				$('#answer2').html('Wrong Answers: ' + wrong);
+				$('#answer3').html('&nbsp;');
+				$('#answer4').html('Click here to play again!');
+				$('#answer4').click(function(){
+					gameReset();
+				});
+			}		
+		}
 	});
 });
