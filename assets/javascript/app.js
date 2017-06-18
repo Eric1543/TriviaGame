@@ -17,6 +17,15 @@ $(document).ready(function(){
 	var	ans3 = 0;
 	var	ans4 = 0;
 
+	// Game audio elements from zapsplat.com
+	var rightSound = document.createElement("audio");
+	rightSound.setAttribute("src", "assets/audio/right.mp3");
+	var wrongSound = document.createElement("audio");
+	wrongSound.setAttribute("src", "assets/audio/wrong.mp3");
+	var playAgain = document.createElement("audio");
+	playAgain.setAttribute("src", "assets/audio/playAgain.wav");
+
+
 	// Class constructor for questionAndAnswer object
 	function qAndA(question, answer1, answer2, answer3, answer4){
 		this.question=question;
@@ -81,6 +90,7 @@ $(document).ready(function(){
 					break;
 			}
 			wrong++;
+			wrongSound.play();
 			total--;
 			setTimeout(initialGame, 3000);
 		}
@@ -103,6 +113,8 @@ $(document).ready(function(){
 	}
 
 	function initialGame(){
+		clearInterval(countdownTime);
+
 		startCountdown();
 		showQuestion();
 	}
@@ -112,7 +124,7 @@ $(document).ready(function(){
 		wrong=0;
 		total=5;
 		timeMax=10;
-		play=true;
+		play=true;		
 		clearInterval(countdownTime);
 		initialGame();
 	}
@@ -126,12 +138,16 @@ $(document).ready(function(){
 		$('#answer3').html('&nbsp;');
 		$('#answer4').html('Click here to play again!');
 		$('#answer4').click(function(){
+			if(play==false){
+				playAgain.play();
+			}
 			gameReset();
 		});
 	}
 
 	function wrongAnswer(){
 		wrong++;
+		wrongSound.play();
 		total--;
 		clearInterval(countdownTime);
 		$('#theQuestion').html("Sorry!");
@@ -156,6 +172,7 @@ $(document).ready(function(){
 
 	function rightAnswer(){
 		right++;
+		rightSound.play();
 		total--;
 		clearInterval(countdownTime);
 		$('#theQuestion').html("Right!");
